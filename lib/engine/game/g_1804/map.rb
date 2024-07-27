@@ -59,11 +59,11 @@ module Engine
           'C4' => 'Socialists',
           'C10' => 'Technocrats',
           'C14' => 'Silicon Valley',
-          'D1' => 'Influencers'
+          'D1' => 'Influencers',
           'D7' => 'Liberals',
           'E10' => 'Blue Dog Coalition',
           'F7' => 'Black Caucus',
-          'F9' => 'Problem Solvers Caucus'
+          'F9' => 'Problem Solvers Caucus',
           'F15' => 'Chamber of Commerce',
           'G4' => 'Labor Unions',
           'G12' => 'Main Street Caucus',
@@ -74,7 +74,7 @@ module Engine
           'I10' => 'Republican Study Committee',
           'I16' => 'Liberty Caucus',
           'I18' => 'Crypto Whales',
-          'J7' => 'Populist Right & Nationalists'
+          'J7' => 'Populist Right & Nationalists',
           'J13' => 'Freedom Caucus',
           'K14' => 'Evangelicals',
         }.freeze
