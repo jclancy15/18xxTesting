@@ -197,7 +197,7 @@ module Engine
             Engine::Step::DiscardTrain,
             Engine::Step::Exchange,
             Engine::Step::SpecialTrack,
-            G1830::Step::BuySellParShares,
+            G1804::Step::BuySellParShares,
           ])
         end
 
