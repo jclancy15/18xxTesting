@@ -28,9 +28,9 @@ module Engine
 
         BANK_CASH = 12_000
 
-        CERT_LIMIT = { 2 => 28, 3 => 20, 4 => 16, 5 => 13, 6 => 11 }.freeze
+        CERT_LIMIT = { 1 => 56, 2 => 28, 3 => 20, 4 => 16, 5 => 13, 6 => 11 }.freeze
 
-        STARTING_CASH = { 2 => 1200, 3 => 800, 4 => 600, 5 => 480, 6 => 400 }.freeze
+        STARTING_CASH = { 1 => 1800, 2 => 1200, 3 => 800, 4 => 600, 5 => 480, 6 => 400 }.freeze
 
         MARKET = [
           %w[60y
