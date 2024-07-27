@@ -46,7 +46,7 @@ module Engine
               {
                 type: 'shares',
                 shares: 'random_share',
-                corporations: %w[AC DT FA GP],
+                corporations: ['PRR'],
               }],
             color: nil,
           },
@@ -59,9 +59,9 @@ module Engine
                   ' Emily Snyder (ES) campaign without further payment. The DNCC private company may not be sold to any corporation, and does'\
                   ' not exchange hands if the owning player loses the campaign advisor note of the ES.'\
                   ' When the B&O purchases its first train the private company is closed.',
-            abilities: [{ type: 'close', when: 'bought_train', corporation: 'ES' },
+            abilities: [{ type: 'close', when: 'bought_train', corporation: 'B&O' },
                         { type: 'no_buy' },
-                        { type: 'shares', shares: 'ES_0' }],
+                        { type: 'shares', shares: 'B&O_0' }],
             color: nil,
           },
         ].freeze
