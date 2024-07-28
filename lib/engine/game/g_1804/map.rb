@@ -109,11 +109,6 @@ module Engine
             %w[B9 C6 C8 C12 D3 D5 D9 D11 E4 E6 E8 F3 F5 G16 H9 H13 H15 H17 I12 I14 J11 J15 K8 K10 K12] => 'blank',
             ['D7'] => 'city=revenue:0;label=B',
           },
-
-          yellow: {
-            ['F9'] => 'city=revenue:0;city=revenue:0;label=OO;upgrade=cost:80,terrain:mountain',
-            ['J7'] => 'city=revenue:40;city=revenue:40;path=a:2,b:_0;path=5:0,b:_1;label=NY;upgrade=cost:80,terrain:mountain',
-          },
           
         }.freeze
         LAYOUT = :pointy
