@@ -61,7 +61,7 @@ module Engine
           'C14' => 'Silicon Valley',
           'D1' => 'Influencers',
           'D7' => 'Liberals',
-          'E2' => "Populist Left',
+          'E2' => 'Populist Left',
           'E10' => 'Blue Dog Coalition',
           'F7' => 'Black Caucus',
           'F9' => 'Problem Solvers Caucus',
