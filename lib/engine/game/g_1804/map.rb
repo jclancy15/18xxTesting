@@ -110,6 +110,16 @@ module Engine
             ['D7'] => 'city=revenue:0;label=B',
           },
 
+          gray: {
+            %w[B13 I18] => 'town=revenue:10;path=a:0,b:_0;path=a:1,b:_0',
+            ['D1'] => 'town=revenue:10;path=a:3,b:_0;path=a:5,b:_0',
+            %w[G2 J17] => 'path=a:2,b:3',
+            %w[F1 I6] => 'path=a:3,b:5',
+            ['B5'] => 'path=a:0,b:4',
+            ['D13'] => 'path=a:0,b:3',
+            ['C2'] => 'path=a:0,b:3; path=a:3,b:5',
+          },
+
           yellow: {
             ['F9'] => 'city=revenue:0;city=revenue:0;label=OO;upgrade=cost:80,terrain:mountain',
             ['J7'] => 'city=revenue:40;city=revenue:40;path=a:2,b:_0;path=a:5,b:_1;label=NY;upgrade=cost:80,terrain:mountain',
