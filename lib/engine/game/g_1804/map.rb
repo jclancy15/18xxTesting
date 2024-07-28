@@ -103,6 +103,9 @@ module Engine
             %w[C4 E10 H11 G14] => 'town',
             ['C10'] => 'city=revenue:0;upgrade=cost:120,terrain:mountain',
             %w[E12 F11 F13 G6 H7] => 'upgrade=cost:80,terrain:mountain',
+            ['J9'] => 'upgrade=cost:120,terrain:mountain',
+            ['G8'] => 'upgrade=cost:160,terrain:mountain',
+            %w[B7 B11 E2 F7 G12 I10 I16 J13 H15] => 'city',
           },
           
 
