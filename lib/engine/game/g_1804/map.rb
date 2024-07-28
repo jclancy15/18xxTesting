@@ -112,7 +112,6 @@ module Engine
 
           gray: {
             %w[B13 I18] => 'town=revenue:10;path=a:0,b:_0;path=a:1,b:_0',
-            ['D1'] => 'town=revenue:10;path=a:3,b:_0;path=a:5,b:_0',
 
           },
 
