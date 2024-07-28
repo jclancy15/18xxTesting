@@ -101,6 +101,8 @@ module Engine
 
           white: {
             %w[C4 E10 H11 G14] => 'town',
+            ['C10'] => 'city=revenue:0;upgrade=cost:120,terrain:mountain',
+            %w[E12 F11 F13 G6 H7] => 'upgrade=cost:80,terrain:mountain',
           },
           
 
