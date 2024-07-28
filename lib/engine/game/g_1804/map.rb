@@ -98,7 +98,7 @@ module Engine
             ['G18'] => 'offboard=revenue:yellow_20|green_30|brown_40;path=a:0,b:_0;path=a:1,b:_0',
             ['K14'] => 'offboard=revenue:yellow_10|brown_40;path=a:1,b:_0;path=a:3,b:_0',
           },
-
+        }.freeze
         LAYOUT = :pointy
       end
     end
