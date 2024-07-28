@@ -61,6 +61,7 @@ module Engine
           'C14' => 'Silicon Valley',
           'D1' => 'Influencers',
           'D7' => 'Liberals',
+          'E2' => "Populist Left',
           'E10' => 'Blue Dog Coalition',
           'F7' => 'Black Caucus',
           'F9' => 'Problem Solvers Caucus',
@@ -106,7 +107,7 @@ module Engine
             ['J9'] => 'upgrade=cost:120,terrain:mountain',
             ['G8'] => 'upgrade=cost:160,terrain:mountain',
             %w[B7 B11 E2 F7 G12 I8 I10 I16 J13 H15] => 'city',
-            %w[B9 C6 C8 C12 D3 D5 D9 D11 E4 E6 E8 F3 F5 G16 H9 H13 H15 H17 I12 I14 J11 J15 K8 K10 K12] => 'blank',
+            %w[B9 C6 C8 C12 D3 D5 D9 D11 E4 E6 E8 F3 F5 G16 H9 H13 H17 I12 I14 J11 J15 K8 K10 K12] => 'blank',
             ['D7'] => 'city=revenue:0;label=B',
           },
 
