@@ -98,16 +98,6 @@ module Engine
             ['G18'] => 'offboard=revenue:yellow_20|green_30|brown_40;path=a:0,b:_0;path=a:1,b:_0',
             ['K14'] => 'offboard=revenue:yellow_10|brown_40;path=a:1,b:_0;path=a:3,b:_0',
           },
-          gray: {
-            %w[B13 I18] => 'town=revenue:10;path=a:0,b:_0;path=a:1,b:_0',
-            ['D1'] => 'town=revenue:10;path=a:3,b:_0;path=a:5,b:_0',
-            %w[G2 J17] => 'path=a:2,b:3',
-            %w[F1 I6] => 'path=a:3,b:5',
-            ['B5'] => 'path=a:0,b:4',
-            ['D13'] => 'path=a:0,b:3',
-            ['C2'] => 'path=a:0,b:3; path=a:3,b:5',
-          },
-        }.freeze
 
         LAYOUT = :pointy
       end
