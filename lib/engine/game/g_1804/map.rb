@@ -98,6 +98,21 @@ module Engine
             ['G18'] => 'offboard=revenue:yellow_20|green_30|brown_40;path=a:0,b:_0;path=a:1,b:_0',
             ['K14'] => 'offboard=revenue:yellow_10|brown_40;path=a:1,b:_0;path=a:3,b:_0',
           },
+
+          white: {
+            %w[C4 E10 H11 G14] => 'town',
+            ['C10'] => 'city=revenue:0;upgrade=cost:120,terrain:mountain',
+            %w[E12 F11 F13 G6 H7] => 'upgrade=cost:80,terrain:mountain',
+            ['J9'] => 'upgrade=cost:120,terrain:mountain',
+            ['G8'] => 'upgrade=cost:160,terrain:mountain',
+            %w[B7 B11 E2 F7 G12 I10 I16 J13 H15] => 'city',
+            ['D7'] => 'city;label=B',
+            %w[B9 C6 C8 C12 D3 D5 D9 D11 E4 E6 E8 F3 F5 G16 H9 H13 H15 H17 J11 J15 K8 K10 K12] => 'blank',
+          },
+          
+
+
+          
         }.freeze
         LAYOUT = :pointy
       end
