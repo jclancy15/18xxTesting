@@ -81,18 +81,22 @@ module Engine
 
         HEXES = {
           red: {
-            ['F2'] =>
-                     'offboard=revenue:yellow_40|brown_70;path=a:3,b:_0;path=a:4,b:_0;path=a:5,b:_0',
-            ['I1'] =>
-                   'offboard=revenue:yellow_30|brown_60,hide:1,groups:Gulf;path=a:4,b:_0;border=edge:5',
-            ['J2'] =>
-                   'offboard=revenue:yellow_30|brown_60;path=a:3,b:_0;path=a:4,b:_0;border=edge:2',
-            ['A9'] =>
-                   'offboard=revenue:yellow_30|brown_50,hide:1,groups:Canada;path=a:5,b:_0;border=edge:4',
-            ['A11'] =>
-                   'offboard=revenue:yellow_30|brown_50,groups:Canada;path=a:5,b:_0;path=a:0,b:_0;border=edge:1',
-            ['K13'] => 'offboard=revenue:yellow_30|brown_40;path=a:2,b:_0;path=a:3,b:_0',
-            ['B24'] => 'offboard=revenue:yellow_20|brown_30;path=a:1,b:_0;path=a:0,b:_0',
+            ['A8'] =>
+                     'offboard=revenue:yellow_20|brown_50,hide:1,groups:Philanthropy;path=a:0,b:_0;border=edge:4',
+            ['A10'] =>
+                     'offboard=revenue:yellow_20|brown_50,groups:Philanthropy;path=a:0,b:_0',
+            ['A12'] =>
+                     'offboard=revenue:yellow_20|brown_50,hide:1,groups:Philanthropy;path=a:0,b:_0;border=edge:1',        
+            ['B3'] =>
+                   'offboard=revenue:yellow_30|brown_60;path=a:0,b:_0;path=a:5,b:_0',
+            ['C14'] =>
+                   'offboard=revenue:yellow_20|brown_40;path=a:0,b:_0;path=a:1,b:_0',
+            ['F15'] =>
+                   'offboard=revenue:yellow_30|brown_50;path=a:0,b:_0;path=a:1,b:_0',
+            ['G4'] =>
+                   'offboard=revenue:yellow_20|green_30;path=a:2,b:_0;path=a:4,b:_0',
+            ['G18'] => 'offboard=revenue:yellow_20|green_30|brown_40;path=a:0,b:_0;path=a:1,b:_0',
+            ['K14'] => 'offboard=revenue:yellow_10|brown_40;path=a:1,b:_0;path=a:3,b:_0',
           },
           gray: {
             ['D2'] => 'city=revenue:20;path=a:5,b:_0;path=a:4,b:_0',
