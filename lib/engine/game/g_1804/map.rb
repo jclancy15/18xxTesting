@@ -111,11 +111,6 @@ module Engine
           },
 
 
-          yellow: {
-            ['F9'] => 'city=revenue:0;city=revenue:0;label=OO;upgrade=cost:80,terrain:mountain',
-            ['J7'] => 'city=revenue:40;city=revenue:40;path=a:2,b:_0;path=5:0,b:_1;label=NY;upgrade=cost:80,terrain:mountain',
-          },
-        }.freeze
         
         LAYOUT = :pointy
       end
