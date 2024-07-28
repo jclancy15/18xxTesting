@@ -110,8 +110,8 @@ module Engine
             ['D7'] => 'city=revenue:0;label=B',
           },
 
-
-        
+         
+        }.freeze
         LAYOUT = :pointy
       end
     end
