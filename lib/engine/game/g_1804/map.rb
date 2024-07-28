@@ -113,11 +113,7 @@ module Engine
           gray: {
             %w[B13 I18] => 'town=revenue:10;path=a:0,b:_0;path=a:1,b:_0',
             ['D1'] => 'town=revenue:10;path=a:3,b:_0;path=a:5,b:_0',
-            %w[G2 J17] => 'path=a:2,b:3',
-            %w[F1 I6] => 'path=a:3,b:5',
-            ['B5'] => 'path=a:0,b:4',
-            ['D13'] => 'path=a:0,b:3',
-            ['C2'] => 'path=a:0,b:3; path=a:3,b:5',
+
           },
 
           yellow: {
