@@ -33,8 +33,7 @@ module Engine
         STARTING_CASH = { 1 => 1800, 2 => 1000, 3 => 700, 4 => 550, 5 => 460, 6 => 400 }.freeze
 
          MARKET = [
-           %w[''
-            ''
+           %w[
             129
             148
             165
