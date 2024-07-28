@@ -58,7 +58,7 @@ module Engine
             desc: "The owner of the DNCC private company immediately receives the campaign advisor's note of the"\
                   ' Emily Snyder (ES) campaign without further payment. The DNCC private company may not be sold to any corporation, and does'\
                   ' not exchange hands if the owning player loses the campaign advisor note of the ES.'\
-                  ' When the B&O purchases its first train the private company is closed.',
+                  ' When the ES campaign purchases its first marketing team the private company is closed.',
             abilities: [{ type: 'close', when: 'bought_train', corporation: 'ES' },
                         { type: 'no_buy' },
                         { type: 'shares', shares: 'ES_0' }],
