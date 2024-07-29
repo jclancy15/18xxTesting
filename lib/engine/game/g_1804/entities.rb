@@ -41,7 +41,7 @@ module Engine
             sym: 'BSMK',
             value: 160,
             revenue: 15,
-            desc: '"The purchasing player receives 10% influence with a Republican (AC, DT, FA, or GP) campaign randomly selected at the start of the game.',
+            desc: 'The purchasing player receives 10% influence with a Republican (AC, DT, FA, or GP) campaign randomly selected at the start of the game.',
             abilities: [
               {
                 type: 'shares',
