@@ -259,13 +259,6 @@ module Engine
             G1804::Step::BuySellParShares,
           ])
         end
-       
-        def prog_bonus(route, stops)
-           if !entity.companies.find {|company| company.sym=='VM'}
-             0
-          else
-             10
-        end
         
         def revenue_for(route, stops)
           super + prog_bonus(route, stops)
