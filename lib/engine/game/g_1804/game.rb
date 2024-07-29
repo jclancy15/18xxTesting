@@ -264,7 +264,7 @@ module Engine
           revenue = super
 
           prog = stops.find { |stop| stop.hex.name == 'B7' }
-          revenue +=10 if prog && vox
+          revenue +=10 if prog
 
           revenue
         end
