@@ -264,16 +264,6 @@ module Engine
           super + prog_bonus(route, stops)
         end
 
-        def hex_bonus_amount(route, stops)
-           return 0 if !entity.companies.find {|company| company.sym=='P4'}
-          
-          abilities(route.corporation, :hexes_bonus) do |ability|
-            hex_bonus_amount += ability.amount if stops.any? { |s| ability.hexes.include?(s.hex.id) }
-          end
-
-        hex_bonus_amount
-        end
-
         def prog_bonus(route, stops)
            if !entity.companies.find {|company| company.sym=='VM'}
              0
