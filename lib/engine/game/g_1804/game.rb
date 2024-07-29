@@ -262,6 +262,7 @@ module Engine
         
         def revenue_for(route, stops)
           revenue = super
+          hex = route.hexes
 
           revenue
         end
