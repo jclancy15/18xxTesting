@@ -259,15 +259,19 @@ module Engine
             G1804::Step::BuySellParShares,
           ])
         end
-
-         def revenue_for(route, stops)
+    
+        B7_Caucus = ['B7'].freeze
+        def VM_company
+            @VM ||= @company.by_id('VM')
+        end
+        
+        def revenue_for(route, stops)
           revenue = super
+          hex = route.hexes
+          revenue += 10 if hex.id == B7_Caucus && route.corporation.assigned?(VM_company)
 
-          route.corporation.companies.each do |company|
-            abilities(company, :hex_bonus) do |ability|
-              revenue += stops.map { |s| s.hex.id }.uniq&.sum { |id| ability.hexes.include?(id) ? ability.amount : 0 }
-            end
-          end
+          revenue
+        end
 
         STATUS_TEXT = Base::STATUS_TEXT.merge(
          'can_buy_companies_from_other_players' => ['Interplayer Company Buy',
