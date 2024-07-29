@@ -264,7 +264,6 @@ module Engine
           revenue = super
 
           prog = stops.find { |stop| stop.hex.name == 'B7' }
-          vox = entity.companies.find {|company| company.sym=='VM'}
           revenue +=10 if prog && vox
 
           revenue
