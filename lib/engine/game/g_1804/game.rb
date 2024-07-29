@@ -275,8 +275,10 @@ module Engine
         end
 
         def prog_bonus(route, stops)
-           return 0 if !entity.companies.find {|company| company.sym=='VM'}
-        else 10
+           if !entity.companies.find {|company| company.sym=='VM'}
+             0
+          else
+             10
         end
 
         STATUS_TEXT = Base::STATUS_TEXT.merge(
