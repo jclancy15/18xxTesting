@@ -260,6 +260,15 @@ module Engine
           ])
         end
 
+         def revenue_for(route, stops)
+          revenue = super
+
+          route.corporation.companies.each do |company|
+            abilities(company, :hex_bonus) do |ability|
+              revenue += stops.map { |s| s.hex.id }.uniq&.sum { |id| ability.hexes.include?(id) ? ability.amount : 0 }
+            end
+          end
+
         STATUS_TEXT = Base::STATUS_TEXT.merge(
          'can_buy_companies_from_other_players' => ['Interplayer Company Buy',
                                                     'Companies can be bought between players after first stock round'],
