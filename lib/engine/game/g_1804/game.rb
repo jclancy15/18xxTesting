@@ -261,7 +261,7 @@ module Engine
         end
         
         def revenue_for(route, stops)
-          super + prog_bonus(route, stops)
+          super
         end
 
         STATUS_TEXT = Base::STATUS_TEXT.merge(
