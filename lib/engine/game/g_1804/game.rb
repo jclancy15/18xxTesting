@@ -264,7 +264,9 @@ module Engine
           revenue = super
 
           prog = stops.find { |stop| stop.hex.name == 'B7' }
-          revenue +=10 if prog
+          if route.train.owner.companies.include?('VM')
+              revenue +=10 if prog
+          end
 
           revenue
         end
