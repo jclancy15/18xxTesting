@@ -262,8 +262,10 @@ module Engine
         
         def revenue_for(route, stops)
           revenue = super
-          hex = route.hexes
-          revenue +=10
+
+          prog = stops.find { |stop| stop.hex.name == 'B7' }
+          vox = entity.companies.find {|company| company.sym=='VM'}
+          revenue +=10 if prog && vox
 
           revenue
         end
