@@ -85,8 +85,8 @@ module Engine
           'N8' => 'Midwest',
           'N10' => 'Appalachia',
           'N12' => 'Mid-Atlantic',
-          'O5' => Pacific States & Territories',
-          'O7' => Texas & Desert States',
+          'O5' => 'Pacific States & Territories',
+          'O7' => 'Texas & Desert States',
           'O9' => 'Deep South',
           'O11' => 'Carolinas',
         }.freeze
