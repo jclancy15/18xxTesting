@@ -121,7 +121,7 @@ module Engine
             %w[B9 C6 C8 C12 D3 D5 D9 D11 E4 E6 E8 F3 F5 G16 H9 H13 H17 I12 I14 J11 J15 K8 K10 K12] => 'blank',
             ['D7'] => 'city=revenue:0;label=B',
 
-            %w[M13 N6 N8 O11] => 'city=revenue:yellow_20|green_40|brown_60;path=a:2,b:_0,terminal:1;path=a:0,b:_0,terminal:1;path=a:1,b:_0,terminal:1;label=E',
+            %w[M13 N6 N8 O11] => 'city=revenue:yellow_20|green_40|brown_60;path=a:2,b:_0,terminal:1;path=a:0,b:_0,terminal:1',
             %w[M9 N10 N12 O9] => 'city=revenue:yellow_10|green_20|brown_50',
             ['O5'] => 'offboard=revenue:yellow_10|green_60',
             ['O7'] => 'offboard=revenue:yellow_10|green_50',
