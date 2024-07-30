@@ -124,7 +124,6 @@ module Engine
             ['M13'] => 'city=revenue:yellow_30|; path=a:0,b:_0,terminal:1',
             ['O11'] => 'city=revenue:yellow_30|; path=a:1,b:_0,terminal:1; path=a:2,b:_0,terminal:1; path=a:3,b:_0,terminal:1',
             ['N6'] => 'city=revenue:yellow_30|; path=a:0,b:_0,terminal:1; path=a:4,b:_0,terminal:1; path=a:5,b:_0,terminal:1',
-            ['N8'] => 'city=revenue:yellow_30|; path=a:0,b:_0,terminal:1; path=a:1,b:_0,terminal:1; path=a:3,b:_0,terminal:1; path=a:4,b:_0,terminal:1; path=a:5,b:_0,terminal:1',
             %w[M9 N10 N12 O9] => 'city=revenue:yellow_10|green_20|brown_50',
             ['O5'] => 'offboard=revenue:yellow_10|green_60',
             ['O7'] => 'offboard=revenue:yellow_10|green_50',
