@@ -122,7 +122,7 @@ module Engine
             ['D7'] => 'city=revenue:0;label=B',
 
             %w[M13 N6 N8 O11] => 'city=revenue:yellow_30|',
-            %w[M9 N10 N12 O9] => 'offboard=revenue:yellow_10|green_20|brown_50',
+            %w[M9 N10 N12 O9] => 'city=revenue:yellow_10|green_20|brown_50',
             ['O5'] => 'offboard=revenue:yellow_10|green_60',
             ['O7'] => 'offboard=revenue:yellow_10|green_50',
           },
