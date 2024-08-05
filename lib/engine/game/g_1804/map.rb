@@ -122,7 +122,7 @@ module Engine
             ['D7'] => 'city=revenue:0;label=B',
 
             ['M13'] => 'city=revenue:yellow_30|,slots:8;path=a:0,b:_0,terminal:1',
-            ['N6'] => 'city=revenue:yellow_30|,slots:8;path=a:0,b:_0,terminal:1;path=a:4,b:_0,terminal:1path=a:5,b:_0,terminal:1',
+            ['N6'] => 'city=revenue:yellow_30|,slots:8;path=a:0,b:_0,terminal:1;path=a:4,b:_0,terminal:1;path=a:5,b:_0,terminal:1',
             ['N8'] => 'city=revenue:yellow_30|,slots:8;path=a:0,b:_0,terminal:1;path=a:0,b:_0,terminal:1;path=a:1,b:_0,terminal:1;path=a:3,b:_0,terminal:1;path=a:4,b:_0,terminal:1;path=a:5,b:_0,terminal:1',
             ['O11'] => 'city=revenue:yellow_30|,slots:8;path=a:1,b:_0,terminal:1;path=a:2,b:_0,terminal:1;path=a:3,b:_0,terminal:1',
             ['M9'] => 'city=revenue:yellow_10|green_20|brown_50,slots:8;path=a:0,b:_0,terminal:1;path=a:5,b:_0,terminal:1',
