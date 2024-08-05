@@ -74,9 +74,20 @@ module Engine
             logo: '1804/AC.alt',
             simple_logo: '1804/AC.alt',
             tokens: [0, 40, 100],
-            coordinates: ['G12'],
+            coordinates: ['N12'],
             color: :'#ADD8E6',
             text_color: 'black',
+            abilities: [
+            {
+              type: 'token',
+              hexes: ['G12'],
+              price: 0,
+            },
+            {
+              type: 'reservation',
+              hex: 'G12',
+            },
+           ],
           },
           {
             float_percent: 60,
@@ -85,8 +96,19 @@ module Engine
             logo: '1804/BS.alt',
             simple_logo: '1804/BS.alt',
             tokens: [0, 40, 100],
-            coordinates: ['E2'],
+            coordinates: ['N12'],
             color: :'#32763f',
+            abilities: [
+            {
+              type: 'token',
+              hexes: ['E2'],
+              price: 0,
+            },
+            {
+              type: 'reservation',
+              hex: 'E2',
+            },
+           ],
           },
           {
             float_percent: 60,
