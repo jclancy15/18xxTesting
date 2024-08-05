@@ -74,7 +74,7 @@ module Engine
             logo: '1804/AC.alt',
             simple_logo: '1804/AC.alt',
             tokens: [0, 40, 100],
-            coordinates: [N12, G12],
+            coordinates: ['G12'],
             color: :'#ADD8E6',
             text_color: 'black',
           },
@@ -85,7 +85,7 @@ module Engine
             logo: '1804/BS.alt',
             simple_logo: '1804/BS.alt',
             tokens: [0, 40, 100],
-            coordinates: [N12, E2],
+            coordinates: ['E2'],
             color: :'#32763f',
           },
           {
@@ -95,7 +95,7 @@ module Engine
             logo: '1804/CK.alt',
             simple_logo: '1804/CK.alt',
             tokens: [0, 40, 100],
-            coordinates: [N12, B11],
+            coordinates: ['B11'],
             color: :'#474548',
           },
           {
@@ -105,7 +105,7 @@ module Engine
             logo: '1804/DT.alt',
             simple_logo: '1804/DT.alt',
             tokens: [0, 40, 100],
-            coordinates: [N12, J7],
+            coordinates: ['J7'],
             color: '#d1232a',
           },
           {
@@ -115,7 +115,7 @@ module Engine
             logo: '1804/ES.alt',
             simple_logo: '1804/ES.alt',
             tokens: [0, 40, 100],
-            coordinates: [N12, D7],
+            coordinates: ['D7'],
             color: '#025aaa',
           },
           {
@@ -125,7 +125,7 @@ module Engine
             logo: '1804/FA.alt',
             simple_logo: '1804/FA.alt',
             tokens: [0, 40, 100],
-            coordinates: [N12, I16],
+            coordinates: ['I16'],
             color: :'#FFF500',
             text_color: 'black',
           },
@@ -136,7 +136,7 @@ module Engine
             logo: '1804/GP.alt',
             simple_logo: '1804/GP.alt',
             tokens: [0, 40, 100],
-            coordinates: [N12, J13],
+            coordinates: ['J13'],
             color: :'#d88e39',
           },
           {
@@ -146,7 +146,7 @@ module Engine
             logo: '1804/HW.alt',
             simple_logo: '1804/HW.alt',
             tokens: [0, 40, 100],
-            coordinates: [N12, F7],
+            coordinates: ['F7'],
             color: :'#95c054',
           },
         ].freeze
