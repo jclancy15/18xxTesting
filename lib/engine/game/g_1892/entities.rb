@@ -74,7 +74,7 @@ module Engine
             logo: '1892/J&J.alt',
             simple_logo: '1892/J&J.alt',
             tokens: [0, 40, 100],
-            coordinates: 'C12',
+            coordinates: 'H13',
             color: '#32763f',
           },
           {
