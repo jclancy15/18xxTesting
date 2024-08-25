@@ -45,9 +45,9 @@ module Engine
             value: 150,
             revenue: 20,
             desc: 'The initial purchaser of the ZBS immediately receives a 10% share of OR stock without further'\
-                  ' payment. This action does not close the ZBS. The OR corporation will not be running at this point,'\
+                  ' payment. This action does not close the ZBS. The ORR corporation will not be running at this point,'\
                   ' but the stock may be retained or sold subject to the ordinary rules of the game.',
-            abilities: [{ type: 'shares', shares: 'OR_1' }],
+            abilities: [{ type: 'shares', shares: 'ORR_1' }],
             color: nil,
           },
           {
