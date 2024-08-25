@@ -2,7 +2,7 @@
 
 module Engine
   module Game
-    module G1830
+    module G1892
       module Entities
         COMPANIES = [
           {
