@@ -39,6 +39,14 @@ module Engine
           '780' => 2,
           '781' => 2,
           '798' => 2,
+          '9201' => {
+            'count' => 6,
+            'color' => 'green',
+            'code' => 'town=revenue:0;path=a:0,b:_0;path=a:1,b:_0;path=a:2,b:_0;path=a:3,b:_0;path=a:4,b:_0;path=a:5,b:_0',
+          '9202' => {
+            'count' => 6,
+            'color' => 'brown',
+            'code' => 'town=revenue:0;path=a:0,b:_0;path=a:1,b:_0;path=a:2,b:_0;path=a:3,b:_0;path=a:4,b:_0;path=a:5,b:_0',
         }.freeze
 
         LOCATION_NAMES = {
@@ -69,7 +77,7 @@ module Engine
         HEXES = {
           red: {
             ['A14'] =>
-                     'offboard=revenue:yellow_30|brown_60;path=a:5,b:_0;path=a:6,b:_0',
+                     'offboard=revenue:yellow_30|brown_60;path=a:5,b:_0;path=a:0,b:_0',
             ['E18'] =>
                    'offboard=revenue:yellow_40|brown_60;path=a:1,b:_0;path=a:2,b:_0',
             ['F7'] =>
