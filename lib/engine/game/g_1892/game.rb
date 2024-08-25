@@ -210,14 +210,20 @@ module Engine
           # Normal color progression and pre-existing track copied from base
           return false unless upgrades_to_correct_color?(from, to, selected_company: selected_company)
 
-          # Only allow a 12 tile to be placed if the current corporation owns the
-          # proper private.
-          if to.name == '12'
+          # Only allow a 12 tile to be placed if the current corporation owns the proper private.
+          if to.name == '8'
             corporation = @round.current_entity
             return false unless corporation.companies.find { |c| c.sym == 'PCPWC' }
           end
 
-          true
+          # Allow simple track to upgrade to exploded track
+          return true if explosive_upgrade?(from, to)
+
+          super
+        end
+
+        def explosive_upgrade?(from, to)
+          %w[7 8 9 18 20 26 27 624 625 626].include?(from.name) && %w[9201 9202].include?(to.name)
         end
         
         def multiple_buy_only_from_market?
