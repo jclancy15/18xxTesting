@@ -14,54 +14,78 @@ module Engine
             color: nil,
           },
           {
-            name: 'Cessna Lease',
-            sym: 'CL',
-            value: 50,
-            revenue: 10,
-            desc: 'Owning campaign does not receive revenue, but may travel 2 spaces instead of 1 during the Campaign Round.',
+            name: 'Vox Media',
+            sym: 'VM',
+            value: 40,
+            desc: "A campaign owning the VM may lay a tile on VM's hex even if this hex is not connected"\
+                  " to the campaigns's track. This free tile placement is in addition to the campaign's normal tile"\
+                  ' placement. Blocks C12 while owned by a player.',
+            abilities: [{ type: 'blocks_hexes', owner_type: 'player', hexes: ['C12'] },
+                        {
+                          type: 'tile_lay',
+                          owner_type: 'corporation',
+                          hexes: ['C12'],
+                          tiles: %w[3 4 58],
+                          when: 'owning_corp_or_turn',
+                          count: 1,
+                        }],
             color: nil,
           },
           {
-            name: 'Vox Media',
-            sym: 'VM',
-            value: 120,
-            revenue: 20,
-            desc: 'Owning campaign receives +$10 on routes with Progressive Caucus.',
-              abilities: [
-              {
-                type: 'hex_bonus',
-                owner_type: 'corporation',
-                hexes: ['B7'],
-                amount: 10,
-              }],
+            name: 'Cessna Lease',
+            sym: 'CL',
+            value: 75,
+            revenue: 15,
+            desc: 'A campaign owning the CL may place a tile and station token in the CL hex G10 for only the $120'\
+                  " cost of the mountain. The station does not have to be connected to the remainder of the corporation's"\
+                  " route. The tile laid is the owning campaign's one tile placement for the turn. The hex must be empty"\
+                  ' to use this ability. Blocks G10 while owned by a player.',
+            abilities: [{ type: 'blocks_hexes', owner_type: 'player', hexes: ['G10'] },
+                        {
+                          type: 'teleport',
+                          owner_type: 'corporation',
+                          tiles: ['57'],
+                          hexes: ['G10'],
+                        }],
             color: nil,
           },
+ {
+            name: 'Ankara Penthouse',
+            sym: 'AP',
+            value: 110,
+            revenue: 20,
+            desc: 'A campaign owning the AP may exchange it for a 10% share of the NYC if they do not already hold 60%'\
+                  ' of the NYC and there is NYC stock available in the Bank or the Pool. The exchange may be made during'\
+                  " the player's turn of a stock round or between the turns of other players or corporations in either "\
+                  'stock or operating rounds. This action closes the MH.',
+            abilities: ,
+            color: nil,
+          },
+         
           {
             name: 'Black, Manafort, Stone, and Kelly',
             sym: 'BSMK',
             value: 160,
-            revenue: 15,
-            desc: 'The purchasing player receives 10% influence with a Republican (AC, DT, FA, or GP) campaign randomly selected at the start of the game.',
-            abilities: [
-              {
-                type: 'shares',
-                shares: 'random_share',
-                corporations: %w[AC DT FA GP],
-              }],
+            revenue: 25,
+            desc: 'The initial purchaser of the BSMK immediately receives a 10% share of HW stock without further'\
+                  ' payment. This action does not close the BSMK. The HW corporation will not be running at this point,'\
+                  ' but the stock may be retained or sold subject to the ordinary rules of the game.'\
+                  ' Blocks H18 while owned by a player.',
+            abilities: [{ type: 'shares', shares: 'HW_1' }],
             color: nil,
           },
           {
-            name: 'DNC Chairman',
-            sym: 'DNCC',
-            value: 195,
+            name: 'Independent News Network',
+            sym: 'INN',
+            value: 220,
             revenue: 25,
-            desc: "The owner of the DNCC private company immediately receives the campaign advisor's note of the"\
-                  ' Emily Snyder (ES) campaign without further payment. The DNCC private company may not be sold to any corporation, and does'\
-                  ' not exchange hands if the owning player loses the campaign advisor note of the ES.'\
-                  ' When the ES campaign purchases its first marketing team the private company is closed.',
-            abilities: [{ type: 'close', when: 'bought_train', corporation: 'ES' },
+            desc: "The owner of the INN private company immediately receives the campaign advisor's note of the"\
+                  ' David Tusk (DT) campaign without further payment. The INN private company may not be sold to any corporation, and does'\
+                  ' not exchange hands if the owning player loses the campaign advisor note of the DT.'\
+                  ' When the DT campaign purchases its first marketing team the private company is closed.',
+            abilities: [{ type: 'close', when: 'bought_train', corporation: 'DT' },
                         { type: 'no_buy' },
-                        { type: 'shares', shares: 'ES_0' }],
+                        { type: 'shares', shares: 'DT_0' }],
             color: nil,
           },
         ].freeze
