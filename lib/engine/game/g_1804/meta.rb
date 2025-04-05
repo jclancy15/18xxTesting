@@ -10,25 +10,13 @@ module Engine
 
         DEV_STAGE = :production
 
-        GAME_SUBTITLE = 'Railways & Robber Barons'
-        GAME_DESIGNER = 'Francis Tresham'
-        GAME_LOCATION = 'NE USA and SE Canada'
-        GAME_PUBLISHER = :lookout
-        GAME_RULES_URL = 'https://lookout-spiele.de/upload/en_1830re.html_Rules_1830-RE_EN.pdf'
-        GAME_INFO_URL = 'https://github.com/tobymao/18xx/wiki/1830'
+        GAME_DESIGNER = 'Joe Clancy'
+        GAME_LOCATION = 'Abstract'
+        GAME_PUBLISHER = 'Web-published'
+        GAME_RULES_URL = 'N/a'
+        GAME_INFO_URL = 'N/a'
 
-        PLAYER_RANGE = [1, 6].freeze
-        OPTIONAL_RULES = [
-          {
-            sym: :multiple_brown_from_ipo,
-            short_name: 'Buy Multiple Brown Shares From IPO',
-            desc: 'Multiple brown shares may be bought from IPO as well as from pool',
-          },
-          {
-            sym: :optional_6_train,
-            short_name: 'Optional extra 6-Train',
-            desc: 'Adds a 3rd 6-train',
-          },
+        PLAYER_RANGE = [2, 6].freeze
         ].freeze
       end
     end
