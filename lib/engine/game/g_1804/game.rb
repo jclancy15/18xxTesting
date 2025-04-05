@@ -26,7 +26,7 @@ module Engine
         TILE_RESERVATION_BLOCKS_OTHERS = :always
         CURRENCY_FORMAT_STR = '$%s'
 
-        BANK_CASH = 9_000
+        BANK_CASH = 12_000
 
         CERT_LIMIT = { 2 => 28, 3 => 20, 4 => 16, 5 => 13, 6 => 11 }.freeze
 
