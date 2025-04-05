@@ -32,6 +32,16 @@ module Engine
         include Goods
         include Nationalization
 
+        SHIP_CAPACITY =
+          {
+            'Ship 1' => 1,
+            'Ship 2' => 1,
+            'Ship 3' => 2,
+            'Ship 4' => 2,
+            'Ship 5' => 3,
+            'Ship 6' => 3,
+          }.freeze
+
         EBUY_SELL_MORE_THAN_NEEDED = true
         EBUY_DEPOT_TRAIN_MUST_BE_CHEAPEST = false
 
@@ -50,6 +60,7 @@ module Engine
         SELL_AFTER = :p_any_operate
         TILE_RESERVATION_BLOCKS_OTHERS = true
         CURRENCY_FORMAT_STR = '$U%d'
+        HOME_TOKEN_TIMING = :float
 
         MUST_BUY_TRAIN = :always
 
@@ -176,7 +187,7 @@ module Engine
         end
 
         def corn_farm
-          @corn_farm ||= company_by_id('LA_CORN')
+          @corn_farm ||= company_by_id('LO_CORN')
         end
 
         def sheep_farm
@@ -200,6 +211,7 @@ module Engine
 
           goods_setup
           @rptla = @corporations.find { |c| c.id == 'RPTLA' }
+          place_home_token(@rptla)
           @fce = @corporations.find { |c| c.id == 'FCE' }
 
           @rptla.add_ability(Engine::G18Uruguay::Ability::Ship.new(
@@ -283,6 +295,7 @@ module Engine
 
         def operating_round(round_num)
           Round::Operating.new(self, [
+            G18Uruguay::Step::DestinationBonus,
             Engine::Step::Bankrupt,
             Engine::Step::Exchange,
             G18Uruguay::Step::Farm,
@@ -336,7 +349,10 @@ module Engine
           return if corporation == @rptla
           return unless @loans
 
-          amount = corporation.par_price.price * 5
+          float_capitalization = nationalized? ? 10 : 5
+
+          amount = corporation.par_price.price * float_capitalization
+          abilities(corporation, :destination_bonus).use! if nationalized?
           @bank.spend(amount, corporation)
           @log << "#{corporation.name} receives #{format_currency(corporation.cash)}"
           take_loan(corporation, @loans[0]) if @loans.size.positive? && !nationalized?
@@ -387,16 +403,12 @@ module Engine
           str
         end
 
-        def rptla_revenue(corporation)
-          return 0 if @rptla != corporation
-
-          (corporation.loans.size.to_f / 2).floor * 10
+        def rptla_revenue
+          (@rptla.loans.size.to_f / 2).floor * 10
         end
 
-        def rptla_subsidy(corporation)
-          return 0 if @rptla != corporation
-
-          (corporation.loans.size.to_f / 2).ceil * 10
+        def rptla_subsidy
+          (@rptla.loans.size.to_f / 2).ceil * 10
         end
 
         def revenue_for(route, stops)
@@ -440,6 +452,7 @@ module Engine
               when 1
                 start_merge(current_entity.owner)
               when 2
+                acquire_shares
                 decrease_stock_value
                 retreive_home_tokens
                 close_companies
@@ -452,8 +465,8 @@ module Engine
               if @round.round_num < 3
                 new_nationalization_round(@round.round_num + 1)
               elsif @saved_or_round
-                # reorder_players
                 @log << '--Return to Operating Round--'
+                @saved_or_round.force_next_entity! if @saved_or_round.current_entity.closed?
                 @saved_or_round
               else
                 new_operating_round
@@ -532,6 +545,13 @@ module Engine
           return super if nationalized?
 
           super.reject { |c| c == @rptla }.append(@rptla)
+        end
+
+        def ship_capacity(train)
+          val = SHIP_CAPACITY[train.name]
+          return 0 if val.nil?
+
+          val
         end
       end
     end

@@ -963,7 +963,7 @@ module Engine
 
         # ----- Route Modificatons for Gauge Change stops (modifed from 1848)
 
-        # Add gauge changes to visited stops, they count as 0 revenue City stops,
+        # Add gauge changes to visited stops, they count as 0 revenue City stops
         def visited_stops(route)
           gauge_changes = border_crossings(route)
           route_stops = route.connection_data.flat_map { |c| [c[:left], c[:right]] }.uniq.compact # super
@@ -975,9 +975,9 @@ module Engine
 
         def add_gauge_changes_to_stops(num, route_stops)
           gauge_changes = Array.new(num) { Engine::Part::City.new('0') }
-          first_stop = route_stops.first
+          gc_tile = Engine::Tile.new('gc', code: '', color: :yellow, parts: [])
           gauge_changes.each do |stop|
-            stop.tile = first_stop.tile
+            stop.tile = gc_tile
             route_stops.insert(1, stop) # add the gauge change after fist element so that it's not the first or last stop
           end
           LOGGER.debug { "GAME::add_gauge_changes_to_stops > route_stops: #{route_stops.inspect}" }
@@ -1013,10 +1013,6 @@ module Engine
 
           valid_route = visited_stops.first.city? && visited_stops.last.city?
           raise GameError, 'Route must begin and end at a city' unless valid_route
-
-          visited_names = visited_stops.map { |stop| stop.tile.location_name }
-          raise GameError, 'Route may not visit MUMBAI more than once' if visited_names.count('MUMBAI') > 1
-          raise GameError, 'Route may not visit NEPAL more than once' if visited_names.count('NEPAL') > 1
         end
 
         # modify to include variable value cities and route bonus
@@ -1232,6 +1228,243 @@ module Engine
             ['Dividend ≥ 2x share price', '2 →'],
             ['Dividend ≥ 3x share price', '3 →'],
             ['Dividend ≥ 4x share price', '4 →'],
+          ]
+        end
+
+        # Modifies the look of Part::largeIcons (controls the how they are decorated)
+        def decorate_marker(_icon)
+          { color: '', shape: :none }
+        end
+
+        # Map Legends for commodity and connection bounus
+
+        def show_map_legend?
+          true
+        end
+
+        def show_map_legend_on_left?
+          false
+        end
+
+        def map_legends
+          %i[commodity_legend connection_legend]
+        end
+
+        def connection_legend(_font_color, _yellow, green, _brown, _gray, _red, action_processor: nil)
+          cell_style = {
+            border: '1px solid',
+            color: 'black',
+            'font-weight': 'bold',
+            'text-align': 'center',
+            'vertical-align': 'middle',
+            height: '33px',
+          }
+
+          [
+            # table-wide props
+            {
+              style: {
+                margin: '0.5rem 0 0.5rem 0',
+                border: '1px solid',
+                borderCollapse: 'collapse',
+              },
+            },
+            [
+              { text: 'Connection Bonus', props: { attrs: { colspan: 10 }, style: { **cell_style, backgroundColor: green } } },
+            ],
+            [
+              { text: 'Delhi (G8) ⟷ Kocchi (G36)', props: { style: cell_style } },
+              { text: format_currency(100), props: { style: cell_style } },
+            ],
+            [
+              { text: 'Karachi (A16) ⟷ Chennai (K30)', props: { style: cell_style } },
+              { text: format_currency(80), props: { style: cell_style } },
+            ],
+            [
+              { text: 'Lahore (D3) ⟷ Kolkata (P17)', props: { style: cell_style } },
+              { text: format_currency(80), props: { style: cell_style } },
+            ],
+            [
+              { text: 'Nepal (M10) ⟷ Mumbai (D23)', props: { style: cell_style } },
+              { text: format_currency(70), props: { style: cell_style } },
+            ],
+          ]
+        end
+
+        def commodity_legend(_font_color, yellow, green, _brown, _gray, _red, action_processor: nil)
+          cell_style = {
+            border: '1px solid',
+            color: 'black',
+            'font-weight': 'bold',
+            'text-align': 'center',
+            'vertical-align': 'middle',
+            width: '35px',
+            height: '25px',
+          }
+
+          [
+            # table-wide props
+            {
+              style: {
+                margin: '0.5rem 0 0.5rem 0',
+                border: '1px solid',
+                borderCollapse: 'collapse',
+                color: 'black',
+                'font-weight': 'bold',
+                'text-align': 'center',
+                'vertical-align': 'middle',
+                height: '25px',
+              },
+            },
+            [
+              {
+                text: 'Commodity Delivery Bonus',
+                props: { style: { backgroundColor: green }, attrs: { colspan: 11 } },
+              },
+            ],
+            [
+              { text: 'Destination', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { text: 'Hex', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/cotton.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/gold.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/jewlery.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/oil.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/opium.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/ore.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/rice.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/spices.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+              { image: '/icons/18_india/tea.svg', props: { style: { **cell_style, backgroundColor: yellow } } },
+            ],
+            [
+              { text: 'Chennai', props: { style: cell_style } },
+              { text: 'K30', props: { style: cell_style } },
+              { text: format_currency(40), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(50), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(50), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'China', props: { style: cell_style } },
+              { text: 'Q10', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(30), props: { style: cell_style } },
+              { text: format_currency(40), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'Columbo', props: { style: cell_style } },
+              { text: 'K40', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(50), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'Haldia', props: { style: cell_style } },
+              { text: 'P19', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(100), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(30), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'Karachi', props: { style: cell_style } },
+              { text: 'A16', props: { style: cell_style } },
+              { text: format_currency(40), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(50), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(30), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'Kochi', props: { style: cell_style } },
+              { text: 'G36', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(50), props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(70), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'Lahore', props: { style: cell_style } },
+              { text: 'D3', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(100), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(40), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'Mumbai', props: { style: cell_style } },
+              { text: 'D23', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: format_currency(30), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(40), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'Nepal', props: { style: cell_style } },
+              { text: 'M10', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(30), props: { style: cell_style } },
+              { text: format_currency(40), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+            ],
+            [
+              { text: 'Visakhapatnam', props: { style: cell_style } },
+              { text: 'M24', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(20), props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: '-', props: { style: cell_style } },
+              { text: format_currency(30), props: { style: cell_style } },
+              { text: format_currency(70), props: { style: cell_style } },
+            ],
           ]
         end
       end

@@ -12,8 +12,8 @@ module Engine
     include Ownable
     include Passer
 
-    attr_accessor :name, :desc, :min_price, :revenue, :discount, :value
-    attr_reader :sym, :min_auction_price, :treasury, :interval, :color, :text_color, :type, :auction_row
+    attr_accessor :name, :desc, :min_price, :revenue, :discount, :value, :lowest_bid_price
+    attr_reader :sym, :min_auction_price, :treasury, :interval, :color, :text_color, :type, :auction_row, :meta
     attr_writer :max_price
 
     def initialize(sym:, name:, value:, revenue: 0, desc: '', abilities: [], **opts)
@@ -28,11 +28,13 @@ module Engine
       @closed = false
       @min_price = opts[:min_price] || (@value ? (@value / 2.0).ceil : nil)
       @max_price = opts[:max_price] || (@value ? (@value * 2) : nil)
+      @lowest_bid_price = opts[:lowest_bid_price] || nil
       @interval = opts[:interval] # Array of prices or nil
       @color = opts[:color] || :yellow
       @text_color = opts[:text_color] || :black
       @type = opts[:type]&.to_sym
       @auction_row = opts[:auction_row]
+      @meta = opts[:meta] || {}
 
       init_abilities(abilities)
     end

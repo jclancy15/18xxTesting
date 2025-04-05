@@ -12,6 +12,8 @@ require_relative 'map_twisting_tracks_customization'
 require_relative 'map_uk_limited_customization'
 require_relative 'map_china_rapid_development_customization'
 require_relative 'map_poland_customization'
+require_relative 'map_britain_customization'
+require_relative 'map_northern_italy_customization'
 
 module Engine
   module Game
@@ -28,6 +30,8 @@ module Engine
         include MapUKLimitedCustomization
         include MapChinaRapidDevelopmentCustomization
         include MapPolandCustomization
+        include MapBritainCustomization
+        include MapNorthernItalyCustomization
 
         register_colors(red: '#d1232a',
                         orange: '#f58121',
@@ -135,6 +139,7 @@ module Engine
              80p
              90p
              100p
+             110p
              120p
              135p
              150p
@@ -266,7 +271,7 @@ module Engine
         GAME_END_CHECK = { bankrupt: :immediate, final_phase: :one_more_full_or_set }.freeze
         LAYOUT = :pointy
         TILE_LAYS = [{ lay: true, upgrade: true, cost: 0 }].freeze
-        EBUY_OTHER_VALUE = false
+        EBUY_FROM_OTHERS = :never
         COLOR_SEQUENCE = %i[white yellow green brown gray].freeze
         SELL_BUY_ORDER = :sell_buy_sell
         SELL_AFTER = :first
@@ -275,6 +280,8 @@ module Engine
         MUST_EMERGENCY_ISSUE_BEFORE_EBUY = false
         BANKRUPTCY_ENDS_GAME_AFTER = :one
         STATUS_TEXT = {}.freeze
+        TILE_UPGRADES_MUST_USE_MAX_EXITS = [].freeze
+        DISCARDED_TRAINS = :remove
 
         def find_map_name
           optional_rules&.find { |r| r.to_s.include?('map_') }&.to_s&.delete_prefix('map_')&.downcase
@@ -359,15 +366,33 @@ module Engine
           proto = send("map_#{map_name}_game_phases")
           proto.each { |pp| phases << pp.dup }
 
-          # change last phase based on train roster
-          phases[-1][:name] = game_trains.last[:name]
-          phases[-1][:on] = game_trains.last[:name]
+          if respond_to?("map_#{map_name}_post_game_phases")
+            phases = send("map_#{map_name}_post_game_phases", phases)
+          else
+            # change last phase based on train roster
+            phases.last[:name] = game_trains.last[:name]
+            phases.last[:on] = game_trains.last[:name]
+          end
 
           phases
         end
 
         def half_dividend_by_map?
-          game_capitalization == :incremental
+          return game_capitalization == :incremental unless respond_to?("map_#{map_name}_half_dividend")
+
+          send("map_#{map_name}_half_dividend")
+        end
+
+        def share_price_change_for_dividend_as_full_cap_by_map?
+          return game_capitalization == :full unless respond_to?("map_#{map_name}_share_price_change_for_dividend_as_full_cap")
+
+          send("map_#{map_name}_share_price_change_for_dividend_as_full_cap")
+        end
+
+        def movement_type_at_emr_share_issue_by_map
+          return :left_block unless respond_to?("map_#{map_name}_movement_type_at_emr_share_issue")
+
+          send("map_#{map_name}_movement_type_at_emr_share_issue")
         end
 
         def redef_const(const, value)
@@ -400,7 +425,7 @@ module Engine
             redef_const(:SELL_BUY_ORDER, :sell_buy)
             redef_const(:SELL_AFTER, :after_sr_floated)
             redef_const(:SELL_MOVEMENT, :left_block_pres)
-            redef_const(:SOLD_OUT_INCREASE, false)
+            redef_const(:SOLD_OUT_INCREASE, true)
             redef_const(:MUST_EMERGENCY_ISSUE_BEFORE_EBUY, true)
             redef_const(:BANKRUPTCY_ENDS_GAME_AFTER, :all_but_one)
           else
@@ -616,6 +641,18 @@ module Engine
           revenue_str + send("map_#{map_name}_extra_revenue_str", route)
         end
 
+        def extra_revenue(entity, routes)
+          return super unless respond_to?("map_#{map_name}_extra_revenue")
+
+          send("map_#{map_name}_extra_revenue", entity, routes)
+        end
+
+        def submit_revenue_str(routes, show_subsidy)
+          return super unless respond_to?("map_#{map_name}_submit_revenue_str")
+
+          send("map_#{map_name}_submit_revenue_str", routes, show_subsidy)
+        end
+
         def timeline
           return super unless respond_to?("map_#{map_name}_timeline")
 
@@ -624,6 +661,62 @@ module Engine
 
         def ipo_name(_corp)
           game_capitalization == :incremental ? 'Treasury' : 'IPO'
+        end
+
+        def issuable_shares(entity)
+          return [] unless entity.operating_history.size > 1
+          return [] unless entity.corporation?
+
+          bundles_for_corporation(entity, entity)
+            .select { |bundle| @share_pool.fit_in_bank?(bundle) }
+        end
+
+        def can_remove_icon?(entity)
+          return false unless respond_to?("map_#{map_name}_can_remove_icon?")
+
+          send("map_#{map_name}_can_remove_icon?", entity)
+        end
+
+        def icon_hexes(entity)
+          return [] unless respond_to?("map_#{map_name}_icon_hexes")
+
+          send("map_#{map_name}_icon_hexes", entity)
+        end
+
+        def remove_icon(entity, hex_id)
+          return unless respond_to?("map_#{map_name}_remove_icon")
+
+          send("map_#{map_name}_remove_icon", entity, hex_id)
+        end
+
+        def removable_icon_action_str
+          return unless respond_to?("map_#{map_name}_removable_icon_action_str")
+
+          send("map_#{map_name}_removable_icon_action_str")
+        end
+
+        def status_str(corporation)
+          return super unless respond_to?("map_#{map_name}_status_str")
+
+          send("map_#{map_name}_status_str", corporation)
+        end
+
+        def modify_tile_lay(entity, action)
+          return action unless respond_to?("map_#{map_name}_modify_tile_lay")
+
+          send("map_#{map_name}_modify_tile_lay", entity, action)
+        end
+
+        def pre_lay_tile_action(action, entity, tile_lay)
+          return unless respond_to?("map_#{map_name}_pre_lay_tile_action")
+
+          send("map_#{map_name}_pre_lay_tile_action", action, entity, tile_lay)
+        end
+
+        def place_home_token(corporation)
+          return super unless respond_to?("map_#{map_name}_place_home_token")
+
+          send("map_#{map_name}_place_home_token", corporation)
         end
       end
     end

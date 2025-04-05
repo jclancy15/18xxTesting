@@ -221,6 +221,10 @@ module Engine
 
       # :after_last_to_act -- player after the last to act goes first. Order remains the same.
       # :first_to_pass -- players ordered by when they first started passing.
+      # :most_cash -- players ordered from most cash on hand to least.
+      # :least_cash -- players ordered from least cash on hand to most.
+      # :next_clockwise -- priority passes from the player who started this SR to the next player in player order.
+      # :most_cash_keep_order -- player with most cash gets priority, absolutre turn order remains unchanged.
       NEXT_SR_PLAYER_ORDER = :after_last_to_act
 
       # do tile reservations completely block other companies?
@@ -250,7 +254,12 @@ module Engine
 
       # ebuy = presidential cash is contributed
       EBUY_PRES_SWAP = true # allow presidential swaps of other corps when ebuying
-      EBUY_OTHER_VALUE = true # allow ebuying other corp trains for up to face
+
+      # allow ebuying other corp trains
+      # :never - never
+      # :value - for up to face value
+      # :always - for any value
+      EBUY_FROM_OTHERS = :value
       EBUY_DEPOT_TRAIN_MUST_BE_CHEAPEST = true # if ebuying from depot, must buy cheapest train
       MUST_EMERGENCY_ISSUE_BEFORE_EBUY = false # corporation must issue shares before ebuy (if possible)
       EBUY_SELL_MORE_THAN_NEEDED = false # true if corporation may continue to sell shares even though enough funds
@@ -258,7 +267,7 @@ module Engine
       EBUY_OWNER_MUST_HELP = false # owner of ebuying entity is on the hook
 
       # if sold more than needed then cannot then buy a cheaper train in the depot.
-      EBUY_SELL_MORE_THAN_NEEDED_LIMITS_DEPOT_TRAIN = false
+      EBUY_SELL_MORE_THAN_NEEDED_SETS_PURCHASE_MIN = false
 
       # loans taken during ebuy can lead to receviership
       EBUY_CORP_LOANS_RECEIVERSHIP = false
@@ -274,6 +283,11 @@ module Engine
       # operating_round (start of next OR)
       # operate (corporation's first OR turn)
       HOME_TOKEN_TIMING = :operate
+
+      # Entity for token placement decided on tile lay
+      # :current_operator
+      # :owner
+      TOKEN_PLACEMENT_ON_TILE_LAY_ENTITY = :current_operator
 
       DISCARDED_TRAINS = :discard # discard or remove
       DISCARDED_TRAIN_DISCOUNT = 0 # percent
@@ -980,7 +994,7 @@ module Engine
 
       # Before rusting, check if this train individual should rust.
       def rust?(train, purchased_train)
-        train.rusts_on == purchased_train.sym ||
+        Array(train.rusts_on).include?(purchased_train.sym) ||
           (train.obsolete_on == purchased_train.sym && @depot.discarded.include?(train))
       end
 
@@ -1027,7 +1041,7 @@ module Engine
       def submit_revenue_str(routes, show_subsidy)
         revenue_str = format_revenue_currency(routes_revenue(routes))
         subsidy = routes_subsidy(routes)
-        subsidy_str = show_subsidy || subsidy.positive? ? " + #{format_currency(routes_subsidy(routes))} (subsidy)" : ''
+        subsidy_str = show_subsidy || subsidy.positive? ? " + #{format_currency(routes_subsidy(routes))} (#{subsidy_name})" : ''
         revenue_str + subsidy_str
       end
 
@@ -1071,7 +1085,7 @@ module Engine
 
         value = player.cash
         if emergency
-          return liquidity(player) unless @round
+          return liquidity(player, emergency: false) unless @round
 
           value += player.shares_by_corporation.sum do |corporation, shares|
             next 0 if shares.empty?
@@ -1263,6 +1277,14 @@ module Engine
 
       def sold_out_increase?(_corporation)
         self.class::SOLD_OUT_INCREASE
+      end
+
+      def sold_out?(corporation)
+        corporation.player_share_holders.values.sum == 100
+      end
+
+      def sold_out_stock_movement(corporation)
+        @stock_market.move_up(corporation)
       end
 
       def log_share_price(entity, from, steps = nil, log_steps: false)
@@ -1588,7 +1610,7 @@ module Engine
         hex = hex_by_id(corporation.coordinates)
 
         tile = hex&.tile
-        if !tile || (tile.reserved_by?(corporation) && tile.paths.any?)
+        if !tile || (tile.reserved_by?(corporation) && !tile.paths.empty?)
 
           if @round.pending_tokens.any? { |p| p[:entity] == corporation }
             # 1867: Avoid adding the same token twice
@@ -1650,9 +1672,6 @@ module Engine
 
       def clear_graph_for_entity(entity)
         graph_for_entity(entity).clear
-      end
-
-      def clear_token_graph_for_entity(entity)
         token_graph_for_entity(entity).clear
       end
 
@@ -2353,6 +2372,18 @@ module Engine
         true
       end
 
+      def render_revenue_history?(corporation)
+        !corporation.operating_history.empty?
+      end
+
+      def subsidy_name
+        'subsidy'
+      end
+
+      def company_value(company)
+        company.value
+      end
+
       private
 
       def init_graph
@@ -2891,6 +2922,10 @@ module Engine
                            @players.sort_by { |p| [p.cash, @players.index(p)] }.reverse
                          when :least_cash
                            @players.sort_by { |p| [p.cash, @players.index(p)] }
+                         when :next_clockwise
+                           @players.rotate
+                         when :most_cash_keep_order
+                           @players.rotate(@players.index(@players.max_by(&:cash)))
                          else
                            []
                          end
@@ -2918,6 +2953,11 @@ module Engine
         when :least_cash
           current_order = @players.dup
           @players.sort_by! { |p| [p.cash, current_order.index(p)] }
+        when :next_clockwise
+          @players.rotate!
+        when :most_cash_keep_order
+          player_with_most_cash = @players.max_by(&:cash)
+          @players.rotate!(@players.index(player_with_most_cash))
         end
         return if silent
 
@@ -3206,7 +3246,7 @@ module Engine
       end
 
       def ability_blocking_step
-        supported_steps = [Step::Tracker, Step::Token, Step::Route, Step::BuyTrain]
+        supported_steps = [Step::Tracker, Step::Token, Step::Route, Step::Dividend, Step::BuyTrain]
         @round.steps.find do |step|
           supported_steps.any? { |s| step.is_a?(s) } && !step.passed? && step.active? && step.blocks?
         end
@@ -3370,6 +3410,10 @@ module Engine
       end
 
       def second_icon(corporation); end
+
+      def corp_loans_text
+        'Loans'
+      end
     end
   end
 end

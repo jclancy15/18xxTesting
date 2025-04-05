@@ -31,8 +31,11 @@ module Engine
           end
 
           def can_merge?(entity)
+            return unless @game.can_acquire_minors
+
             entity.type != :minor &&
-            !entity.taken_over_minor &&
+            !@game.north_corp?(entity) &&
+            !sold_out?(entity) &&
             !mergeable_candidates(entity).empty?
           end
 
@@ -51,7 +54,6 @@ module Engine
             keep_token = (action.choice.to_s == 'map')
             @game.start_merge(action.entity, @merging.last, keep_token)
             @merging = nil
-            pass!
           end
 
           def mergeable_type(corporation)
@@ -63,12 +65,8 @@ module Engine
           end
 
           def mergeable_candidates(corporation)
-            return [] if @game.north_corp?(corporation)
-
             @game.corporations.select do |c|
               next unless c.type == :minor
-              next corporation.cash >= @game.class::MINOR_TAKEOVER_COST if @game.minors_stop_operating && !c.floated?
-              next true if @game.minors_stop_operating && corporation.cash >= c.share_price&.price
               next true if c.floated? && corporation.cash >= c.share_price&.price && c.operated?
 
               false
@@ -92,10 +90,14 @@ module Engine
           end
 
           def can_swap?
-            return true if @game.minors_stop_operating && !mz?(@merging.last)
+            return merged_token_in_shared_city? unless mz?(@merging.last)
 
-            @merging.last.tokens.first&.used &&
+            @merging.first.next_token &&
             !mz?(@merging.last) &&
+            merged_token_in_shared_city?
+          end
+
+          def merged_token_in_shared_city?
             @merging.first.tokens.none? { |token| token.hex == @merging.last.tokens.first.hex }
           end
 
@@ -104,7 +106,7 @@ module Engine
           end
 
           def show_other_players
-            @game.minors_stop_operating
+            false
           end
 
           def show_other
@@ -112,6 +114,10 @@ module Engine
           end
 
           def log_skip(_entity); end
+
+          def sold_out?(corporation)
+            corporation.player_share_holders.values.sum == 100
+          end
         end
       end
     end

@@ -8,6 +8,8 @@ module Engine
 
     def share_price(coordinates)
       row, column = coordinates
+      return if row.negative? || column.negative?
+
       @market.market[row]&.[](column)
     end
 
@@ -27,19 +29,19 @@ module Engine
       raise NotImplementedError
     end
 
-    def down_left_hex(_corporation, coordinates)
+    def diagonally_down_left(_corporation, coordinates)
       raise NotImplementedError
     end
 
-    def up_left_hex(_corporation, coordinates)
+    def diagonally_up_left(_corporation, coordinates)
       raise NotImplementedError
     end
 
-    def down_right_hex(_corporation, coordinates)
+    def diagonally_down_right(_corporation, coordinates)
       raise NotImplementedError
     end
 
-    def up_right_hex(_corporation, coordinates)
+    def diagonally_up_right(_corporation, coordinates)
       raise NotImplementedError
     end
   end
@@ -101,30 +103,38 @@ module Engine
   class HexMovement < BaseMovement
     def left(corporation, coordinates)
       r, c = coordinates
-      new_coords = [r, c - 2]
+      new_coords = [r, c - 1]
       return new_coords if share_price(new_coords)
 
-      @market.down_left_hex(corporation, coordinates)
+      @market.diagonally_down_left(corporation, coordinates)
     end
 
     def right(corporation, coordinates)
       r, c = coordinates
-      new_coords = [r, c + 2]
+      new_coords = [r, c + 1]
       return new_coords if share_price(new_coords)
 
-      @market.up_right_hex(corporation, coordinates)
+      @market.diagonally_up_right(corporation, coordinates)
     end
 
-    def down_left_hex(_corporation, coordinates)
+    def up(corporation, coordinates)
+      diagonally_up_right(corporation, coordinates)
+    end
+
+    def down(corporation, coordinates)
+      diagonally_down_left(corporation, coordinates)
+    end
+
+    def diagonally_down_left(_corporation, coordinates)
       r, c = coordinates
-      new_coords = [r + 1, c - 1]
+      new_coords = [r + 1, c]
       x = share_price(new_coords)
       return new_coords if x
 
       coordinates
     end
 
-    def up_left_hex(_corporation, coordinates)
+    def diagonally_up_left(_corporation, coordinates)
       r, c = coordinates
       new_coords = [r - 1, c - 1]
       return new_coords if share_price(new_coords)
@@ -132,7 +142,7 @@ module Engine
       coordinates
     end
 
-    def down_right_hex(_corporation, coordinates)
+    def diagonally_down_right(_corporation, coordinates)
       r, c = coordinates
       new_coords = [r + 1, c + 1]
       return new_coords if share_price(new_coords)
@@ -140,9 +150,9 @@ module Engine
       coordinates
     end
 
-    def up_right_hex(_corporation, coordinates)
+    def diagonally_up_right(_corporation, coordinates)
       r, c = coordinates
-      new_coords = [r - 1, c + 1]
+      new_coords = [r - 1, c]
       return new_coords if share_price(new_coords)
 
       coordinates

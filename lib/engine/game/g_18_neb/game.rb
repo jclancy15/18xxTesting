@@ -39,7 +39,7 @@ module Engine
 
         ALLOW_TRAIN_BUY_FROM_OTHER_PLAYERS = false
         EBUY_DEPOT_TRAIN_MUST_BE_CHEAPEST = false
-        EBUY_SELL_MORE_THAN_NEEDED_LIMITS_DEPOT_TRAIN = true
+        EBUY_SELL_MORE_THAN_NEEDED_SETS_PURCHASE_MIN = true
 
         CERT_LIMIT_CHANGE_ON_BANKRUPTCY = true
         BANKRUPTCY_ENDS_GAME_AFTER = :all_but_one
@@ -85,21 +85,21 @@ module Engine
           {
             name: '5',
             on: '5/7',
-            train_limit: 3,
+            train_limit: { 'ten-share': 3, local: 1 },
             tiles: %i[yellow green brown],
             operating_rounds: 2,
           },
           {
             name: '6',
             on: '6/8',
-            train_limit: 2,
+            train_limit: { 'ten-share': 2, local: 1 },
             tiles: %i[yellow green brown],
             operating_rounds: 2,
           },
           {
             name: '4D',
             on: '4D',
-            train_limit: 2,
+            train_limit: { 'ten-share': 2, local: 1 },
             tiles: %i[yellow green brown gray],
             operating_rounds: 2,
           },
@@ -294,6 +294,7 @@ module Engine
         end
 
         def operating_round(round_num)
+          @round_num = round_num
           Round::Operating.new(self, [
             G18Neb::Step::Bankrupt,
             G18Neb::Step::Assign,
@@ -445,15 +446,19 @@ module Engine
 
         def operating_order
           corporations = @corporations.select(&:floated?)
-          if @normal_operating_order
-            corporations.sort
-          else
-            @normal_operating_order = true
+          if @turn == 1 && (@round_num || 1) == 1
             corporations.sort_by do |c|
               sp = c.share_price
               [sp.price, sp.corporations.find_index(c)]
             end
+          else
+            corporations.sort
           end
+        end
+
+        def check_other(route)
+          double_chicago = (self.class::CHICAGO_HEXES & route.stops.map { |s| s.hex.id }) == self.class::CHICAGO_HEXES
+          raise GameError, 'Cannot include both North and South Chicago' if double_chicago
         end
 
         def revenue_for(route, stops)
